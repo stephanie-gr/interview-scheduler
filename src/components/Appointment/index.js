@@ -7,6 +7,8 @@ import Empty from "./Empty";
 export default function Appointment (props) {
   return (
     <article className="appointment">
+      <Header time={props.time}/>
+      {props.interview ? <Show student={props.name} interviewer={props.interviewer}/> : <Empty />}
     </article>
   )
 }
