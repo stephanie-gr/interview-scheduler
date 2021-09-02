@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from 'react'
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
@@ -39,11 +39,28 @@ storiesOf("Button", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
   }) 
-  .add("Unselected", () => <DayListItem name="Monday" spots={5} />) 
-  .add("Selected", () => <DayListItem name="Monday" spots={5} selected />) 
-  .add("Full", () => <DayListItem name="Monday" spots={0} />)
+  .add("Unselected", () => 
+    <DayListItem 
+      name="Monday" 
+      spots={5} 
+    />) 
+  .add("Selected", () => 
+    <DayListItem 
+      name="Monday" 
+      spots={5} 
+      selected 
+    />) 
+  .add("Full", () => 
+    <DayListItem 
+      name="Monday" 
+      spots={0} 
+    />)
   .add("Clickable", () => (
-    <DayListItem name="Tuesday" setDay={action("setDay")} spots={5} /> 
+    <DayListItem 
+      name="Tuesday" 
+      setDay={action("setDay")} 
+      spots={5} 
+    /> 
   ));
 
   const days = [
@@ -124,14 +141,14 @@ storiesOf("Button", module)
         .add("Initial", () => (
           <InterviewerList
             interviewers={interviewers}
-            setInterviewer={action("setInterviewer")}
+            onChange={action("onChange")}
           />
         ))
         .add("Preselected", () => (
           <InterviewerList
             interviewers={interviewers}
-            interviewer={3}
-            setInterviewer={action("setInterviewer")}
+            value={3}
+            onChange={action("onChange")}
           />
         ));
 
@@ -139,13 +156,51 @@ storiesOf("Button", module)
         .addParameters({
           backgrounds: [{ name: "white", value: "#fff", default: true }]
         })
-        .add("Appointment", () => <Appointment />)
-        .add("Appointment", () => <Appointment time="12pm" />)
-        .add("Header", () => <Header time="12pm" />)
-        .add("Empty", () => <Empty onAdd={action("onAdd")} />)
-        .add("Show", () => <Show student="" interviewer={interviewer} onEdit={action("onEdit")} onDelete={action("onDelete")}/>)
-        .add("Confirm", () => <Confirm message="" onConfirm={action("onConfirm")} onCancel={action("onCancel")}/>)
-        .add("Status", () => <Status message="Deleting"/>)
-        .add("Error", () => <Error message="Could not delete appointment." onClose={action("onClose")}/>)
-        .add("Edit", () => <Form name="Name M." interviewers={interviewers} interviewer={interviewer} onSave={action("onSave")} onCancel={action("onCancel")} />)
-        .add("Create", () => <Form interviewers={interviewers} onSave={action("onSave")} onCancel={action("onCancel")}/>)
+        .add("Appointment", () => 
+          <Appointment />)
+        .add("Appointment", () => 
+          <Appointment 
+            time="12pm" 
+          />)
+        .add("Header", () => 
+          <Header 
+            time="12pm" 
+          />)
+        .add("Empty", () => 
+          <Empty 
+            onAdd={action("onAdd")} 
+          />)
+        .add("Show", () => 
+          <Show student="" 
+            interviewer={interviewer} 
+            onEdit={action("onEdit")} 
+            onDelete={action("onDelete")}
+          />)
+        .add("Confirm", () => 
+          <Confirm 
+            message="Appt confirmed" 
+            onConfirm={action("onConfirm")} 
+            onCancel={action("onCancel")}
+          />)
+        .add("Status", () => 
+          <Status 
+            message="Deleting"
+          />)
+        .add("Error", () => 
+          <Error 
+            message="Could not delete appointment." 
+            onClose={action("onClose")}
+          />)
+        .add("Edit", () => 
+          <Form 
+            name="Name" 
+            interviewers={interviewers} 
+            interviewer={interviewer} 
+            onSave={action("onSave")} 
+            onCancel={action("onCancel")} />)
+        .add("Create", () => 
+          <Form 
+            interviewers={interviewers} 
+            onSave={action("onSave")} 
+            onCancel={action("onCancel")}
+          />)
