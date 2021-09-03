@@ -21,12 +21,21 @@ export function getAppointmentsForDay(state, day) {
   } return apptArray;
 };
 
- 
+export function getInterview(state, interview) {
+  let totalInterview = {}
+
+  if (!interview) {
+    return null;
+  }
+
+  for (let interviewer in state.interviewers) {
+    if (interviewer == interview.interviewer) {
+      totalInterview.student = interview.student;
+      totalInterview.interviewer = state.interviewers[interviewer];
+    }
+  } return totalInterview;
+}
 
 
 
-
-
-
-  
 
