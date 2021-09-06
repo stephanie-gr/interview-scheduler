@@ -1,5 +1,4 @@
 
-
 export function getAppointmentsForDay(state, day) {
   let apptArray = [];
 
@@ -54,11 +53,12 @@ export function getInterviewersForDay(state, day) {
   //filter interviewers obj of state obj by filtered appt list and push appointments with matching id's to our apptArray
   for (let person in state.interviewers) {
     for (let oneOf of filteredInterviewerList) {
-      if (state.interviewers[person].name === oneOf) {
+      if (state.interviewers[person].id === oneOf) {
         intArray.push(state.interviewers[person]);
       }
     }
-  } return intArray;
+  } 
+  return intArray;
 };
 
 
