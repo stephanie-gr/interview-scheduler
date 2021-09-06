@@ -44,6 +44,9 @@ export default function Application(props) {
       ...state,
       appointments
     });
+
+    axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
+      .then((response) => (prev => ({...prev, appointments: response.data})))
   }
 
 

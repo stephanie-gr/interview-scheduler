@@ -11,7 +11,7 @@ export default function DayList (props) {
     name={oneDay.name} 
     spots={oneDay.spots} 
     selected={oneDay.name === day}
-    setDay={() => setDay(day)}  
+    setDay={() => setDay(oneDay.name)}  
     />))
 
   return (
