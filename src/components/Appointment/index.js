@@ -17,6 +17,7 @@ export default function Appointment (props) {
   const ERROR_SAVE ="ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
   const CONFIRM = "CONFIRM";
+  const DELETE = "DELETE";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -28,46 +29,55 @@ export default function Appointment (props) {
       interviewer
     };
     
-    console.log('id:', props.id);
-    transition(SAVING);
-
-    props.book(props.id, interview);
-  
-
-    transition(SHOW);
+    transition(SAVING, true);
+    props.book(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true))
   }
 
   function deleteAppt() {
-    const interview = null;
-
-    //TRANSITIONS ARE NOT WORKING
-    transition(CONFIRM);
-
-    props.cancel(props.id, interview);
-
-    transition(EMPTY);
+    transition(DELETE, true);
+    
+    props.cancel(props.id)
+      .then(() => transition(EMPTY))
+      .catch(() => transition(ERROR_DELETE, true))
   }
+
 
   return (
     <article className="appointment">
-      <Header time={props.time}/>
-      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+
+      <Header 
+        time={props.time}
+      />
+
+      {mode === EMPTY && 
+        <Empty 
+          onAdd={() => transition(CREATE)} 
+        />}
+
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={deleteAppt}
           onEdit={() => transition(EDIT)}
-        />
-      )}
+        />)}
+
       {mode === CREATE && 
         <Form 
           interviewers={props.interviewers} 
           onCancel={() => back(EMPTY)} 
           onSave={save}
         />}
+
       {mode === SAVING && <Status />}
-      {mode === CONFIRM && <Confirm onCancel={() => back(SHOW)} />}
+
+      {mode === CONFIRM && 
+        <Confirm 
+          onCancel={() => back(SHOW)} 
+        />}
+
       {mode === EDIT && 
         <Form 
           interviewer={props.interview.interviewer.id}
@@ -76,6 +86,7 @@ export default function Appointment (props) {
           name={props.interview.student} 
           onSave={save} 
           />}
+          
     </article>
   )
 }
