@@ -12,7 +12,10 @@ export default function Appointment (props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
+  const EDIT = "EDIT";
   const SAVING = "SAVING";
+  const ERROR_SAVE ="ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
   const CONFIRM = "CONFIRM";
 
   const { mode, transition, back } = useVisualMode(
@@ -25,7 +28,7 @@ export default function Appointment (props) {
       interviewer
     };
 
-    console.log('id and interview', props.id, interview);
+    transition(SAVING);
 
     props.book(props.id, interview);
 
@@ -35,6 +38,7 @@ export default function Appointment (props) {
   function deleteAppt() {
     const interview = null;
 
+    //TRANSITIONS ARE NOT WORKING
     transition(CONFIRM);
 
     props.cancel(props.id, interview);
@@ -51,11 +55,19 @@ export default function Appointment (props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={deleteAppt}
+          onEdit={() => transition(EDIT)}
         />
       )}
       {mode === CREATE && <Form interviewers={props.interviewers} onCancel={() => back(EMPTY)} onSave={save}/>}
       {mode === SAVING && <Status />}
-      {mode === CONFIRM && <Confirm />}
+      {mode === CONFIRM && <Confirm onCancel={() => back(SHOW)} />}
+      {mode === EDIT && 
+        <Form 
+          interviewers={props.interviewers} 
+          onCancel={() => back(SHOW)} 
+          name={props.interview.student} 
+          onSave={save} 
+          />}
     </article>
   )
 }
