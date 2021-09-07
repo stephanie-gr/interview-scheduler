@@ -27,10 +27,12 @@ export default function Appointment (props) {
       student: name,
       interviewer
     };
-
+    
+    console.log('id:', props.id);
     transition(SAVING);
 
     props.book(props.id, interview);
+  
 
     transition(SHOW);
   }

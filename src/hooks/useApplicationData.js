@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import "components/Application.scss";
 import axios from "axios";
+import { getAppointmentsForDay } from "helpers/selectors";
+import { findDOMNode } from "react-dom";
 
 export default function useApplicationData() {
   const [state, setState] = useState({
@@ -10,6 +12,45 @@ export default function useApplicationData() {
     appointments: [],
     interviewers: []
   })
+
+  useEffect (() => {
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
+    ]).then((all) => {
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
+    });
+  }, [])
+
+  
+  const setDay = day => setState({ ...state, day });
+
+  function updateSpots (state, appointments) {
+    const dayObj = state.days.find(d => d.name === state.day);
+    console.log(dayObj);
+    let spots = 0;
+    
+    for (const id of dayObj.appointments) {
+      const appointment = appointments[id];
+      console.log('appt:', appointment);
+      if (!appointment.interview) {
+        spots++;
+      }
+    }
+  
+      console.log("spots = ", spots);
+      const newDay = {...dayObj, spots}
+  
+      const newDays = state.days.map(d => d.name === state.day ? newDay : d)
+
+  
+      return newDays;
+  }
+
+  
+
+
 
   function bookInterview(id, interview) {
 
@@ -23,15 +64,21 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    setState({
-      ...state,
-      appointments
-    });
-
-    axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
-      .then((prev => ({...prev, appointments})))
-      .then(console.log(state.appointments))
+    const days = updateSpots(state, appointments);
+    
+    axios.put(`/api/appointments/${id}`, {interview})
+    .then(
+      setState({
+        ...state,
+        appointments,
+        days
+      })
+    )
   }
+
+
+  
+  
 
   function cancelInterview(id, interview) {
     const appointment = {  
@@ -49,25 +96,15 @@ export default function useApplicationData() {
       appointments
     });
 
+    const days = updateSpots(state, appointments);
 
     axios.delete(`/api/appointments/${id}`, {interview})
-      .then((prev => ({...prev, appointments})))
-      .then(console.log(state.appointments))
+      .then( () => {
+        setState(prev => ({...prev, appointments, days}))
 
-  }
+      }
 
-  useEffect (() => {
-    Promise.all([
-      axios.get('http://localhost:8001/api/days'),
-      axios.get('http://localhost:8001/api/appointments'),
-      axios.get('http://localhost:8001/api/interviewers')
-    ]).then((all) => {
-      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
-    });
-  }, [])
-
-
-  const setDay = day => setState({ ...state, day });
+      )}
 
   return { state, setDay, bookInterview, cancelInterview}
 }
