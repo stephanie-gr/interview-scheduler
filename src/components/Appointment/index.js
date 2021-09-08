@@ -44,7 +44,6 @@ export default function Appointment (props) {
     .catch((error) => transition(ERROR_DELETE, true))
   }
 
-
   return (
     <article className="appointment">
 
