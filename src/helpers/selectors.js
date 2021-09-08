@@ -50,6 +50,7 @@ export function getInterviewersForDay(state, day) {
 
   const filteredInterviewerList = appts[0].interviewers;
 
+
   //filter interviewers obj of state obj by filtered appt list and push appointments with matching id's to our apptArray
   for (let person in state.interviewers) {
     for (let oneOf of filteredInterviewerList) {
@@ -60,6 +61,7 @@ export function getInterviewersForDay(state, day) {
   } 
   return intArray;
 };
+
 
 
 

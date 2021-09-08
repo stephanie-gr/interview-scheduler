@@ -37,10 +37,10 @@ export default function Appointment (props) {
 
   function deleteAppt() {
     transition(DELETE, true);
-    
+
     props.cancel(props.id)
-      .then(() => transition(EMPTY))
-      .catch(() => transition(ERROR_DELETE, true))
+    .then(() => transition(EMPTY))
+    .catch(() => transition(ERROR_DELETE, true))
   }
 
 
@@ -60,7 +60,7 @@ export default function Appointment (props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onDelete={deleteAppt}
+          onDelete={() => transition(CONFIRM)}
           onEdit={() => transition(EDIT)}
         />)}
 
@@ -71,11 +71,14 @@ export default function Appointment (props) {
           onSave={save}
         />}
 
-      {mode === SAVING && <Status />}
+      {mode === SAVING && <Status status="Saving" />}
+
+      {mode === DELETE && <Status status="Deleting" />}
 
       {mode === CONFIRM && 
         <Confirm 
-          onCancel={() => back(SHOW)} 
+          onCancel={() => back(SHOW)}
+          onConfirm={() => deleteAppt()} 
         />}
 
       {mode === EDIT && 
