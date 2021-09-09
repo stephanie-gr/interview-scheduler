@@ -4,9 +4,9 @@ A single-page app built with React that can create, display, edit, and delete ap
 
 ## Screenshots
 
-!["Create an appointment mode"] https://github.com/stephanie-gr/interview-scheduler/blob/master/docs/Create%20an%20Appointment.png?raw=true
+![Create an appointment mode] (https://github.com/stephanie-gr/interview-scheduler/blob/master/docs/Create%20an%20Appointment.png?raw=true)
 
-!["Landing page with appointments displayed"] https://github.com/stephanie-gr/interview-scheduler/blob/master/docs/Home%20Page.jpg.png?raw=true
+![Landing page with appointments displayed] (https://github.com/stephanie-gr/interview-scheduler/blob/master/docs/Home%20Page.jpg.png?raw=true)
 
 ## Setup
 
